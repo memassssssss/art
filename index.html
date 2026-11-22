@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Art Ledger — Учёт заказов</title>
+  <title>Art Ledger — Финансы и заказы</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #080c10;
-      --surface: rgba(15, 22, 30, 0.78);
+      --surface: rgba(15, 22, 30, 0.8);
       --surface-solid: #0f161e;
       --surface-hover: #151f2b;
       --border: rgba(134, 239, 172, 0.14);
-      --border-strong: rgba(134, 239, 172, 0.32);
+      --border-strong: rgba(134, 239, 172, 0.34);
       --text: #e6edf3;
       --text-muted: #7d8b99;
       --mint: #86efac;
@@ -25,6 +25,8 @@
       --amber-dim: rgba(251, 191, 36, 0.12);
       --rose: #fb7185;
       --rose-dim: rgba(251, 113, 133, 0.12);
+      --violet: #c084fc;
+      --violet-dim: rgba(192, 132, 252, 0.12);
       --radius: 14px;
     }
 
@@ -53,9 +55,9 @@
     .container {
       position: relative;
       z-index: 1;
-      max-width: 1160px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 28px 20px 64px;
+      padding: 26px 20px 64px;
     }
 
     /* Header */
@@ -65,7 +67,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .brand {
@@ -75,8 +77,8 @@
     }
 
     .brand-mark {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       background: linear-gradient(135deg, var(--mint), var(--aqua));
       display: grid;
@@ -101,8 +103,9 @@
 
     .header-actions {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .sync-badge {
@@ -145,7 +148,7 @@
       background: var(--surface);
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 8px 13px;
+      padding: 8px 12px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 500;
@@ -180,15 +183,26 @@
       transform: none;
     }
 
+    .month-filter {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 11px;
+      border-radius: 10px;
+      font-size: 13px;
+      width: auto;
+      backdrop-filter: blur(12px);
+    }
+
     /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 920px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
@@ -200,21 +214,21 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px 20px;
+      padding: 16px 18px;
       backdrop-filter: blur(14px);
     }
 
     .stat-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
     }
 
     .stat-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 600;
       color: var(--text);
     }
@@ -229,10 +243,145 @@
       margin-top: 4px;
     }
 
-    /* Main Layout */
+    /* Analytics Row */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 860px) {
+      .analytics-grid { grid-template-columns: 1fr; }
+    }
+
+    .analytics-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      backdrop-filter: blur(14px);
+    }
+
+    .analytics-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .analytics-header span {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* 6-Month Bar Chart */
+    .chart-bars {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      align-items: end;
+      height: 115px;
+      padding-top: 18px;
+    }
+
+    .chart-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .chart-bar-wrap {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
+    }
+
+    .chart-bar {
+      width: 100%;
+      max-width: 34px;
+      min-height: 4px;
+      border-radius: 6px 6px 3px 3px;
+      background: linear-gradient(180deg, var(--mint), rgba(56, 189, 248, 0.55));
+      transition: height 0.3s ease;
+      position: relative;
+    }
+
+    .chart-bar-val {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .chart-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: capitalize;
+    }
+
+    /* Breakdown Bars */
+    .breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bd-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bd-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    .bd-name {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .bd-amount {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+    }
+
+    .bd-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .bd-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--aqua);
+      transition: width 0.3s ease;
+    }
+
+    /* Main Workspace */
     .workspace {
       display: grid;
-      grid-template-columns: 350px 1fr;
+      grid-template-columns: 360px 1fr;
       gap: 20px;
       align-items: start;
     }
@@ -252,10 +401,44 @@
     .panel-title {
       font-size: 15px;
       font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    /* Entry Kind Switcher */
+    .kind-switcher {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: rgba(8, 12, 16, 0.7);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
       margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    }
+
+    .kind-btn {
+      background: transparent;
+      color: var(--text-muted);
+      padding: 7px 6px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .kind-btn.active[data-kind="order"] {
+      background: var(--aqua-dim);
+      color: var(--aqua);
+    }
+
+    .kind-btn.active[data-kind="donation"] {
+      background: var(--mint-dim);
+      color: var(--mint);
+    }
+
+    .kind-btn.active[data-kind="expense"] {
+      background: var(--rose-dim);
+      color: var(--rose);
     }
 
     /* Form */
@@ -295,13 +478,13 @@
 
     textarea {
       resize: vertical;
-      min-height: 64px;
+      min-height: 60px;
     }
 
     .presets {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 5px;
       margin-top: 6px;
     }
 
@@ -319,28 +502,32 @@
       border-color: var(--border-strong);
     }
 
-    /* Filters & Orders List */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Filters & Feed */
     .toolbar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 16px;
     }
 
     .tabs {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
     }
 
     .tab {
       background: transparent;
       color: var(--text-muted);
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       border: 1px solid transparent;
     }
@@ -357,7 +544,7 @@
     }
 
     .search-box {
-      width: 220px;
+      width: 210px;
     }
 
     @media (max-width: 600px) {
@@ -371,7 +558,7 @@
     }
 
     .order-card {
-      background: rgba(10, 15, 21, 0.75);
+      background: rgba(10, 15, 21, 0.78);
       border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 12px;
       padding: 14px 16px;
@@ -385,11 +572,19 @@
       border-color: var(--border-strong);
     }
 
+    .order-card.kind-donation {
+      border-left: 3px solid var(--mint);
+    }
+
+    .order-card.kind-expense {
+      border-left: 3px solid var(--rose);
+    }
+
     .order-top {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       margin-bottom: 6px;
     }
 
@@ -399,12 +594,23 @@
       color: var(--text);
     }
 
+    .badge-kind {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .badge-order { background: var(--aqua-dim); color: var(--aqua); }
+    .badge-donation { background: var(--mint-dim); color: var(--mint); }
+    .badge-expense { background: var(--rose-dim); color: var(--rose); }
+
     .order-type {
       font-size: 12px;
       padding: 2px 8px;
       border-radius: 6px;
-      background: var(--aqua-dim);
-      color: var(--aqua);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
       font-weight: 500;
     }
 
@@ -412,7 +618,7 @@
       font-size: 11px;
       padding: 2px 7px;
       border-radius: 6px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-muted);
     }
 
@@ -422,7 +628,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     .order-notes {
@@ -455,6 +661,10 @@
       color: var(--mint);
     }
 
+    .order-price.expense {
+      color: var(--rose);
+    }
+
     .order-controls {
       display: flex;
       flex-wrap: wrap;
@@ -480,16 +690,21 @@
     .paid-half { border-color: rgba(251, 191, 36, 0.4); color: var(--amber); background: var(--amber-dim); }
     .paid-yes { border-color: rgba(134, 239, 172, 0.4); color: var(--mint); background: var(--mint-dim); }
 
-    .btn-del {
+    .btn-icon {
       background: transparent;
       color: var(--text-muted);
       padding: 5px 8px;
       border-radius: 7px;
       font-size: 12px;
-      border: 1px solid transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .btn-del:hover {
+    .btn-icon:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-icon.del:hover {
       color: var(--rose);
       background: var(--rose-dim);
       border-color: rgba(251, 113, 133, 0.3);
@@ -508,7 +723,7 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(4, 7, 10, 0.78);
+      background: rgba(4, 7, 10, 0.8);
       backdrop-filter: blur(6px);
       z-index: 50;
       display: none;
@@ -527,6 +742,8 @@
       max-width: 480px;
       width: 100%;
       padding: 22px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .modal h3 {
@@ -567,30 +784,35 @@
         <div class="brand-mark">AL</div>
         <div>
           <h1>Art Ledger</h1>
-          <span>Учёт заказов и дохода с артов</span>
+          <span>Учёт заказов, донатов и расходов</span>
         </div>
       </div>
 
       <div class="header-actions">
+        <select id="period-select" class="month-filter" title="Период статистики">
+          <option value="all">За всё время</option>
+        </select>
         <div id="sync-badge" class="sync-badge">
           <span class="sync-dot"></span>
           <span id="sync-text">Ожидание</span>
         </div>
+        <button class="btn-ghost" id="btn-export" title="Скачать CSV">Экспорт CSV</button>
         <button class="btn-ghost" id="btn-refresh" title="Обновить из таблицы">Обновить</button>
         <button class="btn-ghost" id="btn-settings">API URL</button>
       </div>
     </header>
 
+    <!-- KPI Cards -->
     <section class="stats-grid">
       <div class="stat-card mint">
-        <div class="stat-label">Получено всего</div>
-        <div class="stat-value" id="stat-total">0 ₽</div>
-        <div class="stat-sub" id="stat-total-count">0 оплаченных заказов</div>
+        <div class="stat-label" id="lbl-net">Чистый доход</div>
+        <div class="stat-value" id="stat-net">0 ₽</div>
+        <div class="stat-sub" id="stat-net-sub">Заказы + донаты − расходы</div>
       </div>
       <div class="stat-card aqua">
-        <div class="stat-label">За этот месяц</div>
-        <div class="stat-value" id="stat-month">0 ₽</div>
-        <div class="stat-sub" id="stat-month-name">Текущий месяц</div>
+        <div class="stat-label">Заказы / Донаты</div>
+        <div class="stat-value" id="stat-split">0 / 0 ₽</div>
+        <div class="stat-sub" id="stat-expenses-sub">Расходы: 0 ₽</div>
       </div>
       <div class="stat-card amber">
         <div class="stat-label">Ожидает оплаты</div>
@@ -600,49 +822,70 @@
       <div class="stat-card">
         <div class="stat-label">В работе / очереди</div>
         <div class="stat-value" id="stat-active">0</div>
-        <div class="stat-sub" id="stat-all-count">Всего заказов: 0</div>
+        <div class="stat-sub" id="stat-avg-sub">Средний чек заказа: 0 ₽</div>
+      </div>
+    </section>
+
+    <!-- Analytics -->
+    <section class="analytics-grid">
+      <div class="analytics-card">
+        <div class="analytics-header">
+          Динамика чистого дохода
+          <span>Последние 6 месяцев</span>
+        </div>
+        <div class="chart-bars" id="monthly-chart"></div>
+      </div>
+
+      <div class="analytics-card">
+        <div class="analytics-header">
+          Поступления по площадкам
+          <span id="bd-period-label">За всё время</span>
+        </div>
+        <div class="breakdown-list" id="platform-breakdown"></div>
       </div>
     </section>
 
     <main class="workspace">
-      <!-- Add Order Form -->
+      <!-- Add Form -->
       <aside class="panel">
-        <div class="panel-title">Новый заказ</div>
+        <div class="panel-title">Новая запись</div>
+
+        <div class="kind-switcher" id="kind-switcher">
+          <button type="button" class="kind-btn active" data-kind="order">Заказ</button>
+          <button type="button" class="kind-btn" data-kind="donation">Донат / Доход</button>
+          <button type="button" class="kind-btn" data-kind="expense">Расход</button>
+        </div>
+
         <form id="order-form">
           <div class="form-group">
-            <label for="f-client">Заказчик (ник / контакт)</label>
+            <label for="f-client" id="lbl-client">Заказчик (ник / контакт)</label>
             <input type="text" id="f-client" placeholder="@username" required />
           </div>
 
           <div class="form-group">
-            <label for="f-type">Тип работы</label>
+            <label for="f-type" id="lbl-type">Тип работы</label>
             <input type="text" id="f-type" placeholder="Ч/Б скетч по пояс" required />
-            <div class="presets">
-              <button type="button" class="preset-chip" data-type="Ч/Б скетч">Ч/Б скетч</button>
-              <button type="button" class="preset-chip" data-type="Лайн-арт">Лайн-арт</button>
-              <button type="button" class="preset-chip" data-type="Портрет">Портрет</button>
-              <button type="button" class="preset-chip" data-type="Полнорост">Полнорост</button>
-              <button type="button" class="preset-chip" data-type="Референс">Референс</button>
-            </div>
+            <div class="presets" id="presets-box"></div>
           </div>
 
           <div class="form-row form-group">
             <div>
-              <label for="f-price">Стоимость (₽)</label>
-              <input type="number" id="f-price" min="0" step="50" placeholder="1500" required />
+              <label for="f-price">Сумма (₽)</label>
+              <input type="number" id="f-price" min="0" step="10" placeholder="1500" required />
             </div>
             <div>
-              <label for="f-platform">Площадка</label>
+              <label for="f-platform">Площадка / Способ</label>
               <select id="f-platform">
                 <option value="Boosty">Boosty</option>
                 <option value="DonationAlerts">DonationAlerts</option>
                 <option value="Карта / СБП">Карта / СБП</option>
+                <option value="Hipolink / ЮMoney">Hipolink / ЮMoney</option>
                 <option value="Другое">Другое</option>
               </select>
             </div>
           </div>
 
-          <div class="form-row form-group">
+          <div class="form-row form-group" id="order-only-fields">
             <div>
               <label for="f-status">Статус работы</label>
               <select id="f-status">
@@ -662,29 +905,31 @@
           </div>
 
           <div class="form-group">
-            <label for="f-date">Дата заказа / дедлайн</label>
+            <label for="f-date">Дата</label>
             <input type="date" id="f-date" required />
           </div>
 
           <div class="form-group">
-            <label for="f-notes">Заметки / ссылка на ТЗ</label>
-            <textarea id="f-notes" placeholder="Детали позы, ссылка на референсы..."></textarea>
+            <label for="f-notes">Заметки / ссылка / сообщение</label>
+            <textarea id="f-notes" placeholder="Детали позы, ссылка на ТЗ или текст доната..."></textarea>
           </div>
 
           <button type="submit" class="btn-primary" id="btn-submit" style="width: 100%;">Добавить в базу</button>
         </form>
       </aside>
 
-      <!-- Orders List -->
+      <!-- Feed -->
       <section class="panel">
         <div class="toolbar">
           <div class="tabs" id="filter-tabs">
             <button class="tab active" data-filter="all">Все</button>
-            <button class="tab" data-filter="active">Активные</button>
-            <button class="tab" data-filter="done">Готовые</button>
+            <button class="tab" data-filter="active">В работе</button>
+            <button class="tab" data-filter="done">Готовые заказы</button>
+            <button class="tab" data-filter="donations">Донаты</button>
+            <button class="tab" data-filter="expenses">Расходы</button>
             <button class="tab" data-filter="unpaid">Ждут оплаты</button>
           </div>
-          <input type="search" class="search-box" id="search-input" placeholder="Поиск по нику или типу..." />
+          <input type="search" class="search-box" id="search-input" placeholder="Поиск по нику, типу, заметкам..." />
         </div>
 
         <div class="orders-list" id="orders-list"></div>
@@ -692,7 +937,7 @@
     </main>
   </div>
 
-  <!-- Settings Modal -->
+  <!-- API Settings Modal -->
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal">
       <h3>Подключение Google Таблицы</h3>
@@ -708,15 +953,103 @@
     </div>
   </div>
 
+  <!-- Edit Entry Modal -->
+  <div class="modal-backdrop" id="edit-modal">
+    <div class="modal">
+      <h3>Редактировать запись</h3>
+      <form id="edit-form">
+        <input type="hidden" id="e-id" />
+        <div class="form-row form-group">
+          <div>
+            <label for="e-kind">Категория</label>
+            <select id="e-kind">
+              <option value="order">Заказ</option>
+              <option value="donation">Донат / Доход</option>
+              <option value="expense">Расход</option>
+            </select>
+          </div>
+          <div>
+            <label for="e-date">Дата</label>
+            <input type="date" id="e-date" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="e-client">От кого / Источник</label>
+          <input type="text" id="e-client" required />
+        </div>
+
+        <div class="form-group">
+          <label for="e-type">Описание / Тип</label>
+          <input type="text" id="e-type" required />
+        </div>
+
+        <div class="form-row form-group">
+          <div>
+            <label for="e-price">Сумма (₽)</label>
+            <input type="number" id="e-price" min="0" step="10" required />
+          </div>
+          <div>
+            <label for="e-platform">Площадка</label>
+            <select id="e-platform">
+              <option value="Boosty">Boosty</option>
+              <option value="DonationAlerts">DonationAlerts</option>
+              <option value="Карта / СБП">Карта / СБП</option>
+              <option value="Hipolink / ЮMoney">Hipolink / ЮMoney</option>
+              <option value="Другое">Другое</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row form-group" id="edit-order-fields">
+          <div>
+            <label for="e-status">Статус работы</label>
+            <select id="e-status">
+              <option value="В очереди">В очереди</option>
+              <option value="В работе">В работе</option>
+              <option value="Готово">Готово</option>
+            </select>
+          </div>
+          <div>
+            <label for="e-paid">Оплата</label>
+            <select id="e-paid">
+              <option value="Не оплачено">Не оплачено</option>
+              <option value="Предоплата 50%">Предоплата 50%</option>
+              <option value="Оплачено">Оплачено</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="e-notes">Заметки</label>
+          <textarea id="e-notes"></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-ghost" id="btn-close-edit">Отмена</button>
+          <button type="submit" class="btn-primary">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
-    // Вставь сюда свою ссылку из Apps Script, чтобы она работала сразу на всех устройствах:
-    const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbwqe2Q3qUg6sY3WmkAwEPLhXkDgjrLvQ3rESvAikU9p7W9jfioKN90KRR8e0TgG-YWHhQ/exec';
+    // Вставь сюда ссылку на Google Apps Script (/exec):
+    const DEFAULT_API_URL = '';
 
     const STORAGE_KEY_API = 'art_ledger_api_url';
     const STORAGE_KEY_DATA = 'art_ledger_cache';
 
+    const PRESETS = {
+      order: ['Ч/Б скетч', 'Лайн-арт', 'Портрет', 'Полнорост', 'Референс', 'Чиби'],
+      donation: ['Донат', 'Подписка Boosty', 'Продажа адопта', 'Чаевые к заказу', 'Пак кистей / стикеров'],
+      expense: ['Комиссия площадки', 'Кисти / Софт', 'Наконечники / Плёнка', 'Реклама / Пиар']
+    };
+
     let orders = [];
+    let currentKind = 'order';
     let currentFilter = 'all';
+    let selectedPeriod = 'all';
     let searchQuery = '';
 
     function getApiUrl() {
@@ -747,7 +1080,58 @@
       return safe.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
     }
 
-    // Load data from Google Sheets or local cache
+    // Switch Form Mode (Order / Donation / Expense)
+    function setFormKind(kind) {
+      currentKind = kind;
+      document.querySelectorAll('.kind-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.kind === kind);
+      });
+
+      const orderFields = document.getElementById('order-only-fields');
+      const lblClient = document.getElementById('lbl-client');
+      const inpClient = document.getElementById('f-client');
+      const lblType = document.getElementById('lbl-type');
+      const inpType = document.getElementById('f-type');
+
+      if (kind === 'order') {
+        orderFields.classList.remove('hidden');
+        lblClient.textContent = 'Заказчик (ник / контакт)';
+        inpClient.placeholder = '@username';
+        lblType.textContent = 'Тип работы';
+        inpType.placeholder = 'Ч/Б скетч по пояс';
+      } else if (kind === 'donation') {
+        orderFields.classList.add('hidden');
+        lblClient.textContent = 'От кого (ник / Аноним)';
+        inpClient.placeholder = 'Аноним / @donater';
+        lblType.textContent = 'Источник дохода';
+        inpType.placeholder = 'Донат на стрим / Подписка Boosty';
+      } else {
+        orderFields.classList.add('hidden');
+        lblClient.textContent = 'Куда / Сервис';
+        inpClient.placeholder = 'Clip Studio / Boosty / Магазин';
+        lblType.textContent = 'Статья расхода';
+        inpType.placeholder = 'Комиссия за вывод / Наконечники';
+      }
+
+      const presetsBox = document.getElementById('presets-box');
+      presetsBox.innerHTML = PRESETS[kind].map(p =>
+        `<button type="button" class="preset-chip" data-type="${escapeHtml(p)}">${escapeHtml(p)}</button>`
+      ).join('');
+    }
+
+    document.getElementById('presets-box').addEventListener('click', (e) => {
+      if (e.target.classList.contains('preset-chip')) {
+        document.getElementById('f-type').value = e.target.dataset.type;
+      }
+    });
+
+    document.getElementById('kind-switcher').addEventListener('click', (e) => {
+      if (e.target.classList.contains('kind-btn')) {
+        setFormKind(e.target.dataset.kind);
+      }
+    });
+
+    // Fetch & Sync
     async function fetchOrders() {
       const cached = localStorage.getItem(STORAGE_KEY_DATA);
       if (cached) {
@@ -769,7 +1153,7 @@
         const res = await fetch(apiUrl, { redirect: 'follow' });
         const data = await res.json();
         if (data.ok) {
-          orders = data.orders || [];
+          orders = (data.orders || []).map(o => ({ ...o, kind: o.kind || 'order' }));
           localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(orders));
           setSyncState('ok', 'Google Sheets');
           render();
@@ -782,7 +1166,6 @@
       }
     }
 
-    // Send mutation to Google Sheets
     async function sendAction(payload) {
       const apiUrl = getApiUrl();
       if (!apiUrl) return { ok: true };
@@ -805,51 +1188,166 @@
       } catch (err) {
         console.error(err);
         setSyncState('error', 'Ошибка записи');
-        alert('Не удалось сохранить в Google Таблицу. Проверь доступ в настройках развёртывания Apps Script.');
+        alert('Не удалось сохранить в Google Таблицу. Проверь настройки развёртывания Apps Script.');
         return { ok: false };
       }
     }
 
-    // Update KPI Cards
-    function updateStats() {
-      let earnedTotal = 0;
-      let earnedMonth = 0;
-      let pendingTotal = 0;
-      let activeCount = 0;
-      let paidOrdersCount = 0;
-
+    // Period Dropdown Population
+    function updatePeriodOptions() {
+      const select = document.getElementById('period-select');
+      const months = new Set();
       const now = new Date();
-      const currentMonthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      const monthName = now.toLocaleString('ru-RU', { month: 'long' });
-      document.getElementById('stat-month-name').textContent = monthName[0].toUpperCase() + monthName.slice(1);
+      months.add(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`);
 
       orders.forEach(o => {
-        const price = Number(o.price) || 0;
-        const isCurrentMonth = String(o.date || '').startsWith(currentMonthPrefix);
-
-        if (o.paid === 'Оплачено') {
-          earnedTotal += price;
-          paidOrdersCount++;
-          if (isCurrentMonth) earnedMonth += price;
-        } else if (o.paid === 'Предоплата 50%') {
-          earnedTotal += price * 0.5;
-          pendingTotal += price * 0.5;
-          if (isCurrentMonth) earnedMonth += price * 0.5;
-        } else {
-          pendingTotal += price;
-        }
-
-        if (o.status === 'В очереди' || o.status === 'В работе') {
-          activeCount++;
+        if (o.date && o.date.length >= 7) {
+          months.add(o.date.slice(0, 7));
         }
       });
 
-      document.getElementById('stat-total').textContent = formatRub(earnedTotal);
-      document.getElementById('stat-total-count').textContent = `Полностью оплачено: ${paidOrdersCount}`;
-      document.getElementById('stat-month').textContent = formatRub(earnedMonth);
+      const sorted = Array.from(months).sort().reverse();
+      const prev = select.value;
+
+      select.innerHTML = `<option value="all">За всё время</option>` + sorted.map(m => {
+        const [y, mo] = m.split('-');
+        const dateObj = new Date(Number(y), Number(mo) - 1, 1);
+        const label = dateObj.toLocaleString('ru-RU', { month: 'long', year: 'numeric' });
+        return `<option value="${m}">${label[0].toUpperCase() + label.slice(1)}</option>`;
+      }).join('');
+
+      if (sorted.includes(prev) || prev === 'all') {
+        select.value = prev;
+      }
+    }
+
+    // Analytics & KPI
+    function updateAnalytics() {
+      updatePeriodOptions();
+
+      const periodItems = selectedPeriod === 'all'
+        ? orders
+        : orders.filter(o => String(o.date || '').startsWith(selectedPeriod));
+
+      let ordersEarned = 0;
+      let donationsEarned = 0;
+      let expensesTotal = 0;
+      let pendingTotal = 0;
+      let activeOrders = 0;
+      let completedOrderSum = 0;
+      let completedOrderCount = 0;
+
+      const platformTotals = {};
+
+      periodItems.forEach(o => {
+        const price = Number(o.price) || 0;
+        const kind = o.kind || 'order';
+
+        if (kind === 'expense') {
+          expensesTotal += price;
+        } else if (kind === 'donation') {
+          donationsEarned += price;
+          platformTotals[o.platform] = (platformTotals[o.platform] || 0) + price;
+        } else {
+          // Order
+          if (o.paid === 'Оплачено') {
+            ordersEarned += price;
+            platformTotals[o.platform] = (platformTotals[o.platform] || 0) + price;
+          } else if (o.paid === 'Предоплата 50%') {
+            ordersEarned += price * 0.5;
+            pendingTotal += price * 0.5;
+            platformTotals[o.platform] = (platformTotals[o.platform] || 0) + price * 0.5;
+          } else {
+            pendingTotal += price;
+          }
+
+          if (o.status === 'В очереди' || o.status === 'В работе') {
+            activeOrders++;
+          }
+          if (price > 0) {
+            completedOrderSum += price;
+            completedOrderCount++;
+          }
+        }
+      });
+
+      const netIncome = ordersEarned + donationsEarned - expensesTotal;
+      const avgCheck = completedOrderCount > 0 ? completedOrderSum / completedOrderCount : 0;
+
+      document.getElementById('lbl-net').textContent = selectedPeriod === 'all' ? 'Чистый доход (всего)' : 'Чистый доход (период)';
+      document.getElementById('stat-net').textContent = formatRub(netIncome);
+      document.getElementById('stat-split').textContent = `${formatRub(ordersEarned)} / ${formatRub(donationsEarned)}`;
+      document.getElementById('stat-expenses-sub').textContent = `Расходы: −${formatRub(expensesTotal)}`;
       document.getElementById('stat-pending').textContent = formatRub(pendingTotal);
-      document.getElementById('stat-active').textContent = activeCount;
-      document.getElementById('stat-all-count').textContent = `Всего заказов: ${orders.length}`;
+      document.getElementById('stat-active').textContent = activeOrders;
+      document.getElementById('stat-avg-sub').textContent = `Средний чек заказа: ${formatRub(avgCheck)}`;
+
+      // Render Platform Breakdown
+      const bdLabel = document.getElementById('bd-period-label');
+      bdLabel.textContent = selectedPeriod === 'all' ? 'За всё время' : selectedPeriod;
+
+      const bdContainer = document.getElementById('platform-breakdown');
+      const entries = Object.entries(platformTotals).sort((a, b) => b[1] - a[1]);
+      const totalGross = entries.reduce((acc, [, v]) => acc + v, 0);
+
+      if (entries.length === 0) {
+        bdContainer.innerHTML = `<div style="font-size:12px; color:var(--text-muted); padding: 18px 0;">Нет оплаченных поступлений за период</div>`;
+      } else {
+        bdContainer.innerHTML = entries.map(([plat, val]) => {
+          const pct = totalGross > 0 ? Math.round((val / totalGross) * 100) : 0;
+          return `
+            <div class="bd-item">
+              <div class="bd-top">
+                <span class="bd-name">${escapeHtml(plat)}</span>
+                <span class="bd-amount">${formatRub(val)} (${pct}%)</span>
+              </div>
+              <div class="bd-track">
+                <div class="bd-fill" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Render 6-Month Chart (always based on full history)
+      const chartContainer = document.getElementById('monthly-chart');
+      const now = new Date();
+      const last6 = [];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        const shortMonth = d.toLocaleString('ru-RU', { month: 'short' }).replace('.', '');
+        last6.push({ ym, label: shortMonth, net: 0 });
+      }
+
+      orders.forEach(o => {
+        const ym = String(o.date || '').slice(0, 7);
+        const bucket = last6.find(b => b.ym === ym);
+        if (!bucket) return;
+        const price = Number(o.price) || 0;
+        const kind = o.kind || 'order';
+        if (kind === 'expense') bucket.net -= price;
+        else if (kind === 'donation') bucket.net += price;
+        else if (o.paid === 'Оплачено') bucket.net += price;
+        else if (o.paid === 'Предоплата 50%') bucket.net += price * 0.5;
+      });
+
+      const maxVal = Math.max(...last6.map(b => Math.max(0, b.net)), 1000);
+      chartContainer.innerHTML = last6.map(b => {
+        const safeNet = Math.max(0, b.net);
+        const heightPct = Math.round((safeNet / maxVal) * 100);
+        const compactVal = safeNet >= 1000 ? (safeNet / 1000).toFixed(1).replace('.0', '') + 'k' : Math.round(safeNet);
+        return `
+          <div class="chart-col">
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height: ${Math.max(heightPct, 4)}%">
+                <span class="chart-bar-val">${compactVal}</span>
+              </div>
+            </div>
+            <span class="chart-label">${escapeHtml(b.label)}</span>
+          </div>
+        `;
+      }).join('');
     }
 
     function getStatusClass(status) {
@@ -865,13 +1363,21 @@
     }
 
     function render() {
-      updateStats();
+      updateAnalytics();
 
       const list = document.getElementById('orders-list');
       const filtered = orders.filter(o => {
-        if (currentFilter === 'active' && o.status === 'Готово') return false;
-        if (currentFilter === 'done' && o.status !== 'Готово') return false;
-        if (currentFilter === 'unpaid' && o.paid === 'Оплачено') return false;
+        const kind = o.kind || 'order';
+
+        if (selectedPeriod !== 'all' && !String(o.date || '').startsWith(selectedPeriod)) {
+          return false;
+        }
+
+        if (currentFilter === 'active' && (kind !== 'order' || o.status === 'Готово')) return false;
+        if (currentFilter === 'done' && (kind !== 'order' || o.status !== 'Готово')) return false;
+        if (currentFilter === 'donations' && kind !== 'donation') return false;
+        if (currentFilter === 'expenses' && kind !== 'expense') return false;
+        if (currentFilter === 'unpaid' && (kind !== 'order' || o.paid === 'Оплачено')) return false;
 
         if (searchQuery) {
           const hay = `${o.client} ${o.type} ${o.notes} ${o.platform}`.toLowerCase();
@@ -881,69 +1387,84 @@
       });
 
       if (filtered.length === 0) {
-        list.innerHTML = `<div class="empty-state">Заказов по выбранному фильтру пока нет</div>`;
+        list.innerHTML = `<div class="empty-state">Записей по выбранным фильтрам пока нет</div>`;
         return;
       }
 
-      list.innerHTML = filtered.map(o => `
-        <article class="order-card" data-id="${escapeHtml(o.id)}">
-          <div>
-            <div class="order-top">
-              <span class="order-client">${escapeHtml(o.client)}</span>
-              <span class="order-type">${escapeHtml(o.type)}</span>
-              <span class="order-platform">${escapeHtml(o.platform)}</span>
-            </div>
-            <div class="order-meta">
-              <span>Дата: ${escapeHtml(o.date)}</span>
-              <span>ID: ${escapeHtml(o.id)}</span>
-            </div>
-            ${o.notes ? `<div class="order-notes">${linkify(o.notes)}</div>` : ''}
-          </div>
+      list.innerHTML = filtered.map(o => {
+        const kind = o.kind || 'order';
+        const kindBadge = kind === 'donation'
+          ? `<span class="badge-kind badge-donation">Донат</span>`
+          : kind === 'expense'
+          ? `<span class="badge-kind badge-expense">Расход</span>`
+          : `<span class="badge-kind badge-order">Заказ</span>`;
 
-          <div class="order-right">
-            <div class="order-price">${formatRub(o.price)}</div>
-            <div class="order-controls">
-              <select class="mini-select js-status ${getStatusClass(o.status)}" aria-label="Статус работы">
-                <option value="В очереди" ${o.status === 'В очереди' ? 'selected' : ''}>В очереди</option>
-                <option value="В работе" ${o.status === 'В работе' ? 'selected' : ''}>В работе</option>
-                <option value="Готово" ${o.status === 'Готово' ? 'selected' : ''}>Готово</option>
-              </select>
+        const pricePrefix = kind === 'expense' ? '−' : '+';
+        const priceClass = kind === 'expense' ? 'order-price expense' : 'order-price';
 
-              <select class="mini-select js-paid ${getPaidClass(o.paid)}" aria-label="Статус оплаты">
-                <option value="Не оплачено" ${o.paid === 'Не оплачено' ? 'selected' : ''}>Не оплачено</option>
-                <option value="Предоплата 50%" ${o.paid === 'Предоплата 50%' ? 'selected' : ''}>Предоплата 50%</option>
-                <option value="Оплачено" ${o.paid === 'Оплачено' ? 'selected' : ''}>Оплачено</option>
-              </select>
+        const orderSelects = kind === 'order' ? `
+          <select class="mini-select js-status ${getStatusClass(o.status)}" aria-label="Статус работы">
+            <option value="В очереди" ${o.status === 'В очереди' ? 'selected' : ''}>В очереди</option>
+            <option value="В работе" ${o.status === 'В работе' ? 'selected' : ''}>В работе</option>
+            <option value="Готово" ${o.status === 'Готово' ? 'selected' : ''}>Готово</option>
+          </select>
 
-              <button type="button" class="btn-del js-delete" title="Удалить заказ">Удалить</button>
+          <select class="mini-select js-paid ${getPaidClass(o.paid)}" aria-label="Статус оплаты">
+            <option value="Не оплачено" ${o.paid === 'Не оплачено' ? 'selected' : ''}>Не оплачено</option>
+            <option value="Предоплата 50%" ${o.paid === 'Предоплата 50%' ? 'selected' : ''}>Предоплата 50%</option>
+            <option value="Оплачено" ${o.paid === 'Оплачено' ? 'selected' : ''}>Оплачено</option>
+          </select>
+        ` : '';
+
+        return `
+          <article class="order-card kind-${kind}" data-id="${escapeHtml(o.id)}">
+            <div>
+              <div class="order-top">
+                ${kindBadge}
+                <span class="order-client">${escapeHtml(o.client)}</span>
+                <span class="order-type">${escapeHtml(o.type)}</span>
+                <span class="order-platform">${escapeHtml(o.platform)}</span>
+              </div>
+              <div class="order-meta">
+                <span>Дата: ${escapeHtml(o.date)}</span>
+                <span>ID: ${escapeHtml(o.id)}</span>
+              </div>
+              ${o.notes ? `<div class="order-notes">${linkify(o.notes)}</div>` : ''}
             </div>
-          </div>
-        </article>
-      `).join('');
+
+            <div class="order-right">
+              <div class="${priceClass}">${pricePrefix}${formatRub(o.price)}</div>
+              <div class="order-controls">
+                ${orderSelects}
+                <button type="button" class="btn-icon js-edit" title="Редактировать">Изменить</button>
+                <button type="button" class="btn-icon del js-delete" title="Удалить">Удалить</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
     }
 
-    // Event Listeners
+    // Init Form Defaults
+    setFormKind('order');
     document.getElementById('f-date').value = new Date().toISOString().slice(0, 10);
 
-    document.querySelectorAll('.preset-chip').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.getElementById('f-type').value = btn.dataset.type;
-      });
-    });
-
+    // Add Entry
     document.getElementById('order-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = document.getElementById('btn-submit');
       submitBtn.disabled = true;
 
+      const isOrder = currentKind === 'order';
       const newOrder = {
-        id: 'ORD-' + Date.now().toString(36).toUpperCase(),
+        id: (currentKind === 'donation' ? 'DON-' : currentKind === 'expense' ? 'EXP-' : 'ORD-') + Date.now().toString(36).toUpperCase(),
+        kind: currentKind,
         client: document.getElementById('f-client').value.trim(),
         type: document.getElementById('f-type').value.trim(),
         price: Number(document.getElementById('f-price').value) || 0,
         platform: document.getElementById('f-platform').value,
-        status: document.getElementById('f-status').value,
-        paid: document.getElementById('f-paid').value,
+        status: isOrder ? document.getElementById('f-status').value : 'Готово',
+        paid: isOrder ? document.getElementById('f-paid').value : 'Оплачено',
         date: document.getElementById('f-date').value,
         notes: document.getElementById('f-notes').value.trim()
       };
@@ -959,6 +1480,7 @@
       submitBtn.disabled = false;
     });
 
+    // Inline Status / Payment Updates
     document.getElementById('orders-list').addEventListener('change', async (e) => {
       const card = e.target.closest('.order-card');
       if (!card) return;
@@ -981,23 +1503,87 @@
       }
     });
 
-    document.getElementById('orders-list').addEventListener('click', async (e) => {
-      if (!e.target.classList.contains('js-delete')) return;
-      const card = e.target.closest('.order-card');
-      const id = card.dataset.id;
-      if (!confirm('Удалить этот заказ из базы?')) return;
+    // Delete & Edit Triggers
+    const editModal = document.getElementById('edit-modal');
+    const editKindSelect = document.getElementById('e-kind');
 
-      orders = orders.filter(x => String(x.id) !== String(id));
-      localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(orders));
-      render();
-      await sendAction({ action: 'delete', id });
+    editKindSelect.addEventListener('change', () => {
+      document.getElementById('edit-order-fields').classList.toggle('hidden', editKindSelect.value !== 'order');
     });
 
+    document.getElementById('orders-list').addEventListener('click', async (e) => {
+      const card = e.target.closest('.order-card');
+      if (!card) return;
+      const id = card.dataset.id;
+
+      if (e.target.classList.contains('js-delete')) {
+        if (!confirm('Удалить эту запись из базы?')) return;
+        orders = orders.filter(x => String(x.id) !== String(id));
+        localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(orders));
+        render();
+        await sendAction({ action: 'delete', id });
+      }
+
+      if (e.target.classList.contains('js-edit')) {
+        const item = orders.find(x => String(x.id) === String(id));
+        if (!item) return;
+
+        document.getElementById('e-id').value = item.id;
+        document.getElementById('e-kind').value = item.kind || 'order';
+        document.getElementById('e-date').value = item.date || '';
+        document.getElementById('e-client').value = item.client || '';
+        document.getElementById('e-type').value = item.type || '';
+        document.getElementById('e-price').value = item.price || 0;
+        document.getElementById('e-platform').value = item.platform || 'Boosty';
+        document.getElementById('e-status').value = item.status || 'В очереди';
+        document.getElementById('e-paid').value = item.paid || 'Не оплачено';
+        document.getElementById('e-notes').value = item.notes || '';
+
+        document.getElementById('edit-order-fields').classList.toggle('hidden', (item.kind || 'order') !== 'order');
+        editModal.classList.add('open');
+      }
+    });
+
+    document.getElementById('btn-close-edit').addEventListener('click', () => editModal.classList.remove('open'));
+
+    document.getElementById('edit-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('e-id').value;
+      const item = orders.find(x => String(x.id) === String(id));
+      if (!item) return;
+
+      const kind = document.getElementById('e-kind').value;
+      const updated = {
+        kind,
+        date: document.getElementById('e-date').value,
+        client: document.getElementById('e-client').value.trim(),
+        type: document.getElementById('e-type').value.trim(),
+        price: Number(document.getElementById('e-price').value) || 0,
+        platform: document.getElementById('e-platform').value,
+        status: kind === 'order' ? document.getElementById('e-status').value : 'Готово',
+        paid: kind === 'order' ? document.getElementById('e-paid').value : 'Оплачено',
+        notes: document.getElementById('e-notes').value.trim()
+      };
+
+      Object.assign(item, updated);
+      localStorage.setItem(STORAGE_KEY_DATA, JSON.stringify(orders));
+      editModal.classList.remove('open');
+      render();
+
+      await sendAction({ action: 'update', id, order: updated });
+    });
+
+    // Filters & Period
     document.getElementById('filter-tabs').addEventListener('click', (e) => {
       if (!e.target.classList.contains('tab')) return;
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       e.target.classList.add('active');
       currentFilter = e.target.dataset.filter;
+      render();
+    });
+
+    document.getElementById('period-select').addEventListener('change', (e) => {
+      selectedPeriod = e.target.value;
       render();
     });
 
@@ -1008,7 +1594,26 @@
 
     document.getElementById('btn-refresh').addEventListener('click', fetchOrders);
 
-    // Settings Modal
+    // Export CSV
+    document.getElementById('btn-export').addEventListener('click', () => {
+      const headers = ['ID', 'Дата', 'Категория', 'Клиент/Источник', 'Описание', 'Сумма', 'Площадка', 'Статус', 'Оплата', 'Заметки'];
+      const rows = orders.map(o => [
+        o.id, o.date, o.kind || 'order', o.client, o.type, o.price, o.platform, o.status, o.paid, (o.notes || '').replace(/\n/g, ' ')
+      ]);
+      const csv = [headers, ...rows]
+        .map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';'))
+        .join('\n');
+
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `art-ledger-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // API Settings Modal
     const modal = document.getElementById('settings-modal');
     document.getElementById('btn-settings').addEventListener('click', () => {
       document.getElementById('api-url-input').value = getApiUrl();
@@ -1017,11 +1622,8 @@
     document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.remove('open'));
     document.getElementById('btn-save-api').addEventListener('click', () => {
       const val = document.getElementById('api-url-input').value.trim();
-      if (val) {
-        localStorage.setItem(STORAGE_KEY_API, val);
-      } else {
-        localStorage.removeItem(STORAGE_KEY_API);
-      }
+      if (val) localStorage.setItem(STORAGE_KEY_API, val);
+      else localStorage.removeItem(STORAGE_KEY_API);
       modal.classList.remove('open');
       fetchOrders();
     });
